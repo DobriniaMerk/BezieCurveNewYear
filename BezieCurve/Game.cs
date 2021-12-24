@@ -14,17 +14,23 @@ namespace BezieCurve
         Curve curve = new Curve();
         bool drawPoints = true;
         bool newDisplay = true;
+        RectangleShape i;
 
         public Game()
         {
             curve.AddPoint(6, 581);
-            curve.AddPoint(778, 384);
-            curve.AddPoint(624, 358);
-            curve.AddPoint(778, 583);
+            curve.AddPoint(415, 384);
+            curve.AddPoint(415, 358);
+            curve.AddPoint(415, 583);
+            i = new RectangleShape();
+            i.Texture = new Texture(new Image("tree.png"));
+            i.Size = new Vector2f(421, 700);
+
         }
 
         public void Draw(RenderWindow rw)
         {
+            rw.Draw(i);
             curve.Draw(rw, drawPoints, newDisplay);
         }
 

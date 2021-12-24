@@ -15,7 +15,6 @@ namespace BezieCurve
         float lstep = 20f;
         int pinned = -1;
         float displacement = 0f;
-        float t = 0f;
         int timer;
         int changespeed = 200;
         List<float> distances;
@@ -69,51 +68,40 @@ namespace BezieCurve
             distances = new List<float>();
             int n = 0;
 
-            timer ++;
+            timer++;
 
-            if (timer > (colorSchemes.Length/3 * changespeed) - 1)
+            if (timer > (colorSchemes.Length / 3 * changespeed) - 1)
                 timer = 0;
 
-            if (newDisplay)
+            for (float i = 0; i <= 1; i += step)
             {
-                for (float i = 0; i <= 1; i += step)
-                {
-                    lastPos = pos;
-                    pos = GetPoint(i);
-                    l += lastPos.Distanse(pos);
-                    distances.Add(l);
-                }
+                lastPos = pos;
+                pos = GetPoint(i);
+                l += lastPos.Distanse(pos);
+                distances.Add(l);
+            }
 
-                displacement += lstep / 10;
-                if (displacement >= lstep)
-                    displacement = 0f;
+            displacement += lstep / 10;
+            if (displacement >= lstep)
+                displacement = 0f;
 
-                for (float i = displacement; i < l; i += lstep)
+            for (float i = displacement; i < l; i += lstep)
+            {
+                for (int j = 1; j < distances.Count; j++)
                 {
-                    for (int j = 1; j < distances.Count; j++)
+                    if (distances[j] > i)
                     {
-                        if (distances[j] > i)
-                        {
-                            n++;
-                            float ratio = (i - distances[j - 1]) / (distances[j] - distances[j - 1]);
-                            cs = new CircleShape(24);
-                            cs.Texture = img;
-                            cs.Position = GetPoint((j - 1) * step + (step * ratio)) + new Vector2f(-12, -12);
-                            cs.FillColor = colorSchemes[(int)(timer/changespeed), j%3];
-                            rw.Draw(cs);
-                            break;
-                        }
+                        n++;
+                        float ratio = (i - distances[j - 1]) / (distances[j] - distances[j - 1]);
+                        cs = new CircleShape(24);
+                        cs.Texture = img;
+                        cs.Position = GetPoint((j - 1) * step + (step * ratio)) + new Vector2f(-12, -12);
+                        cs.FillColor = colorSchemes[(int)(timer / changespeed), j % 3];
+
+                        rw.Draw(cs);
+                        break;
                     }
                 }
-            } else
-            {
-                t += step / 60;
-                if (t >= 1)
-                    t = 0f;
-
-                cs = new CircleShape(5);
-                cs.Position = GetPoint(t) + new Vector2f(-2.5f, -2.5f);
-                rw.Draw(cs);
             }
 
             if (drawPoints)

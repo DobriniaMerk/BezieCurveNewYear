@@ -11,7 +11,7 @@ namespace BezieCurve
         static RenderWindow rw;
         static void Main(string[] args)
         {
-            VideoMode vm = new VideoMode(800, 600);
+            VideoMode vm = new VideoMode(421, 700);
             rw = new RenderWindow(vm, "Bezie", Styles.Resize, new ContextSettings(32, 32, 8));
             rw.SetFramerateLimit(30);
 
